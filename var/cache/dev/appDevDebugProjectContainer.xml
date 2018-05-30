@@ -104,9 +104,9 @@
     </parameter>
     <parameter key="kernel.charset">UTF-8</parameter>
     <parameter key="kernel.container_class">appDevDebugProjectContainer</parameter>
-    <parameter key="database_host">localhost</parameter>
-    <parameter key="database_port">8888</parameter>
-    <parameter key="database_name">symfony_bdd</parameter>
+    <parameter key="database_host">127.0.0.1</parameter>
+    <parameter key="database_port">8889</parameter>
+    <parameter key="database_name">symfony</parameter>
     <parameter key="database_user">root</parameter>
     <parameter key="database_password">root</parameter>
     <parameter key="mailer_transport">smtp</parameter>
@@ -3357,12 +3357,13 @@
     <service id="doctrine.dbal.default_connection" class="Doctrine\DBAL\Connection" public="true">
       <argument type="collection">
         <argument key="driver">pdo_mysql</argument>
-        <argument key="host">localhost</argument>
-        <argument key="port">8888</argument>
-        <argument key="dbname">symfony_bdd</argument>
+        <argument key="host">127.0.0.1</argument>
+        <argument key="port">8889</argument>
+        <argument key="dbname">symfony</argument>
         <argument key="user">root</argument>
         <argument key="password">root</argument>
         <argument key="charset">UTF8</argument>
+        <argument key="unix_socket">« /Applications/MAMP/tmp/mysql/mysql.sock »</argument>
         <argument key="driverOptions" type="collection"/>
         <argument key="defaultTableOptions" type="collection"/>
       </argument>
