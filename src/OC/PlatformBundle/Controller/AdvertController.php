@@ -5,9 +5,11 @@
 namespace OC\PlatformBundle\Controller;
 
 use OC\PlatformBundle\Entity\Advert;
+use OC\PlatformBundle\Form\AdvertType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
 
 class AdvertController extends Controller
 {
@@ -78,17 +80,31 @@ class AdvertController extends Controller
 
   public function addAction(Request $request)
   {
-    $em = $this->getDoctrine()->getManager();
+    // On crée un objet Advert
+    $advert = new Advert();
 
-    // On ne sait toujours pas gérer le formulaire, patience cela vient dans la prochaine partie !
+    // J'ai raccourci cette partie, car c'est plus rapide à écrire !
+    $form = $this->get('form.factory')->create(AdvertType::class, $advert);
+    // ou $form = $this->createForm(AdvertType::class, $advert);
 
-    if ($request->isMethod('POST')) {
-      $request->getSession()->getFlashBag()->add('notice', 'Annonce bien enregistrée.');
+    // Si la requête est en POST
+    if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
 
-      return $this->redirectToRoute('oc_platform_view', array('id' => $advert->getId()));
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($advert);
+        $em->flush();
+
+        $request->getSession()->getFlashBag()->add('notice', 'Annonce bien enregistrée.');
+
+        // On redirige vers la page de visualisation de l'annonce nouvellement créée
+        return $this->redirectToRoute('oc_platform_view', array('id' => $advert->getId()));
     }
-
-    return $this->render('OCPlatformBundle:Advert:add.html.twig');
+    // À ce stade, le formulaire n'est pas valide car :
+    // - Soit la requête est de type GET, donc le visiteur vient d'arriver sur la page et veut voir le formulaire
+    // - Soit la requête est de type POST, mais le formulaire contient des valeurs invalides, donc on l'affiche de nouveau
+    return $this->render('OCPlatformBundle:Advert:add.html.twig', array(
+      'form' => $form->createView(),
+    ));
   }
 
   public function editAction($id, Request $request)

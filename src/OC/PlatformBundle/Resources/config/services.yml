@@ -19,3 +19,11 @@ services:
       - "@oc_platform.email.application_mailer"
     tags:
       - { name: doctrine.event_listener, event: postPersist }
+
+  oc_platform.purger.advert:
+      class: OC\PlatformBundle\Antispam\OCpurger
+      arguments:
+          - "@mailer"
+          - 50
+          - 50
+          - 50

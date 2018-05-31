@@ -174,6 +174,7 @@
     <parameter key="twig.exception_listener.controller">twig.controller.exception:showAction</parameter>
     <parameter key="twig.form.resources" type="collection">
       <parameter>form_div_layout.html.twig</parameter>
+      <parameter>bootstrap_3_layout.html.twig</parameter>
     </parameter>
     <parameter key="twig.default_path">/Users/parhelia3/Dropbox/MAMP/htdocs/Symfony/Symphony/templates</parameter>
     <parameter key="monolog.logger.class">Symfony\Bridge\Monolog\Logger</parameter>
@@ -1708,14 +1709,6 @@
         <argument>2048</argument>
       </call>
       <call method="addListener">
-        <argument>console.command</argument>
-        <argument type="collection">
-          <argument type="service" id="debug.debug_handlers_listener"/>
-          <argument>configure</argument>
-        </argument>
-        <argument>2048</argument>
-      </call>
-      <call method="addListener">
         <argument>kernel.request</argument>
         <argument type="collection">
           <argument type="service" id="router_listener"/>
@@ -2649,10 +2642,11 @@
       <argument type="collection">
         <argument key="debug">true</argument>
         <argument key="strict_variables">true</argument>
-        <argument key="exception_controller">twig.controller.exception:showAction</argument>
         <argument key="form_themes" type="collection">
           <argument>form_div_layout.html.twig</argument>
+          <argument>bootstrap_3_layout.html.twig</argument>
         </argument>
+        <argument key="exception_controller">twig.controller.exception:showAction</argument>
         <argument key="autoescape">name</argument>
         <argument key="cache">/Users/parhelia3/Dropbox/MAMP/htdocs/Symfony/Symphony/var/cache/dev/twig</argument>
         <argument key="charset">UTF-8</argument>
@@ -3690,6 +3684,12 @@
     <service id="oc_platform.doctrine_listener.application_creation" class="OC\PlatformBundle\DoctrineListener\ApplicationCreationListener">
       <tag name="doctrine.event_listener" event="postPersist"/>
       <argument type="service" id="oc_platform.email.application_mailer"/>
+    </service>
+    <service id="oc_platform.purger.advert" class="OC\PlatformBundle\Antispam\OCpurger">
+      <argument type="service" id="swiftmailer.mailer.default"/>
+      <argument>50</argument>
+      <argument>50</argument>
+      <argument>50</argument>
     </service>
     <service id="twig.extension.dump" class="Symfony\Bridge\Twig\Extension\DumpExtension" public="false">
       <tag name="twig.extension"/>
